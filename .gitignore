@@ -1,0 +1,33 @@
+# Virtual environments
+.venv/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.egg
+*.egg-info/
+
+# Build artifacts
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking & linting
+.mypy_cache/
+.ruff_cache/
+
+# Environment variables
+.env
+.env.local
+
+# Generated files
+*.partial
+graphify-out/
+
+# OS files
+.DS_Store
