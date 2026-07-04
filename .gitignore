@@ -28,6 +28,7 @@ htmlcov/
 # Generated files
 *.partial
 graphify-out/
+.claude/
 
 # OS files
 .DS_Store
