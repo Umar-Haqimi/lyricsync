@@ -37,7 +37,7 @@ from PySide6.QtWidgets import (
 from lyricsync import __version__
 from lyricsync.config import AppConfig
 from lyricsync.core.alignment import make_engine
-from lyricsync.core.audio import SUPPORTED_EXTENSIONS
+from lyricsync.core.audio import SUPPORTED_EXTENSIONS, read_tags
 from lyricsync.core.model import LyricDocument
 from lyricsync.core.pipeline import PipelineOptions, run_pipeline
 from lyricsync.core.separation import CUSTOM_TIER, SKIP_TIER, TIERS
@@ -232,6 +232,7 @@ class MainWindow(QMainWindow):
         if not paths:
             return
         self.file_edit.setText(str(paths[0]))
+        self._autofill_tags(paths[0])
         for extra in paths[1:]:
             self.queue_page.add_job(extra)
         if len(paths) > 1:
@@ -245,6 +246,14 @@ class MainWindow(QMainWindow):
                                               f"Audio files ({patterns})")
         if path:
             self.file_edit.setText(path)
+            self._autofill_tags(Path(path))
+
+    def _autofill_tags(self, source: Path) -> None:
+        title, artist = read_tags(source)
+        if title and not self.title_edit.text().strip():
+            self.title_edit.setText(title)
+        if artist and not self.artist_edit.text().strip():
+            self.artist_edit.setText(artist)
 
     def _open_project(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "Open project JSON", "",

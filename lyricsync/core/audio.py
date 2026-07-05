@@ -21,6 +21,26 @@ log = get_logger("audio")
 SUPPORTED_EXTENSIONS = {".mp3", ".wav", ".flac", ".m4a", ".ogg", ".opus", ".aac", ".wma", ".aiff"}
 
 
+def read_tags(path: str | Path) -> tuple[str, str]:
+    """Best-effort (title, artist) read from the file's embedded tags.
+
+    Returns empty strings for whatever mutagen can't find (missing tags,
+    unsupported format, corrupt file) rather than raising — this is only
+    ever used to pre-fill a form field.
+    """
+    import mutagen
+
+    try:
+        tags = mutagen.File(str(path), easy=True)
+    except Exception:
+        return "", ""
+    if not tags:
+        return "", ""
+    title = (tags.get("title") or [""])[0]
+    artist = (tags.get("artist") or [""])[0]
+    return title.strip(), artist.strip()
+
+
 class FFmpegNotFoundError(RuntimeError):
     pass
 
