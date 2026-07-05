@@ -29,6 +29,7 @@ htmlcov/
 *.partial
 graphify-out/
 .claude/
+CLAUDE.md
 
 # OS files
 .DS_Store
